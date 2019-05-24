@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "myrobot.h"
+
 #include <QMainWindow>
 
 namespace Ui {
@@ -16,14 +18,28 @@ public:
     ~MainWindow();
     void updateSentLabel(QString newText);
     void updateReceivedLabel(QString newText);
+    MyRobot *robot;
 
 public slots:
     void updateSendTest();
     void updateReceivedTest();
     void updateSentTrame(QByteArray *sentData);
     void updateReceivedTrame(QByteArray *receivedData);
+private slots:
+    void on_upBoutton_clicked();
+
+    void on_rightBoutton_clicked();
+
+    void on_LeftBoutton_clicked();
+
+    void on_connectBoutton_clicked();
+
+    void on_disconnectBoutton_clicked();
+
+    void on_downBouton_clicked();
+
 private:
-    Ui::MainWindow *ui;    
+    Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

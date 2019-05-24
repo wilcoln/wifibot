@@ -1,8 +1,6 @@
 #ifndef MYROBOT_H
 #define MYROBOT_H
 
-#include "mainwindow.h"
-
 #include <QObject>
 #include <QTcpSocket>
 #include <QAbstractSocket>
@@ -14,14 +12,21 @@
 class MyRobot : public QObject {
     Q_OBJECT
 public:
+    typedef struct dataInType{
+        int SpeedFront;
+        int BatLevel;
+    }dataInType;
+
+
+
     explicit MyRobot(QObject *parent = nullptr);
     void doConnect(QString ipAddress, quint16 port);
     void disConnect();
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
-
-    MyRobot(QObject *parent, MainWindow *w);
+    short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max);
+    void moveBack();
 signals:
     void updateUI(const QByteArray Data);
 public slots:
@@ -39,7 +44,6 @@ public slots:
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
-    MainWindow *window;
 };
 
 #endif // MYROBOT_H

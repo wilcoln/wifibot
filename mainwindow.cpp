@@ -31,3 +31,35 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_upBoutton_clicked()
+{
+    qDebug() << "Move forward";
+    robot->moveForward();
+}
+
+
+void MainWindow::on_rightBoutton_clicked()
+{
+    robot->moveRight();
+}
+
+void MainWindow::on_LeftBoutton_clicked()
+{
+    robot->moveLeft();
+}
+
+void MainWindow::on_connectBoutton_clicked()
+{
+    robot->doConnect(ui->ipAddressEdit->toPlainText(),15020);
+}
+
+void MainWindow::on_disconnectBoutton_clicked()
+{
+    robot->disConnect();
+}
+
+void MainWindow::on_downBouton_clicked()
+{
+    robot->moveBack();
+}
