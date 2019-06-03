@@ -1,5 +1,5 @@
-#ifndef MYROBOT_H
-#define MYROBOT_H
+#ifndef WIFIBOT_H
+#define WIFIBOT_H
 
 #include <QObject>
 #include <QTcpSocket>
@@ -9,7 +9,7 @@
 #include <QMutex>
 #include <QString>
 
-class MyRobot : public QObject {
+class Wifibot : public QObject {
     Q_OBJECT
 public:
     typedef struct dataInType{
@@ -19,7 +19,7 @@ public:
 
 
 
-    explicit MyRobot(QObject *parent = nullptr);
+    explicit Wifibot(QObject *parent = nullptr);
     void doConnect(QString ipAddress, quint16 port);
     void disConnect();
     QByteArray DataToSend;
@@ -46,4 +46,4 @@ private:
     QTimer *TimerEnvoi;
 };
 
-#endif // MYROBOT_H
+#endif // WIFIBOT_H

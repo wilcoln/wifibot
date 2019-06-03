@@ -28,11 +28,11 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        myrobot.cpp
+        wifibot.cpp
 
 HEADERS += \
         mainwindow.h \
-        myrobot.h
+        wifibot.h
 
 FORMS += \
         mainwindow.ui

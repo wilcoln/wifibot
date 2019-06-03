@@ -1,9 +1,7 @@
-// myrobot.cpp
-
 #include "mainwindow.h"
-#include "myrobot.h"
+#include "wifibot.h"
 
-MyRobot::MyRobot(QObject *parent) : QObject(parent) {
+Wifibot::Wifibot(QObject *parent) : QObject(parent) {
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
     DataToSend[1] = 0x07;
@@ -17,11 +15,10 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
 
     DataReceived.resize(21);
     TimerEnvoi = new QTimer();
-    // setup signal and slot
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
 }
 
-void MyRobot::moveForward(){
+void Wifibot::moveForward(){
     DataToSend[2] = 120;
     DataToSend[3] = 0;
     DataToSend[4] = 120;
@@ -29,7 +26,7 @@ void MyRobot::moveForward(){
     DataToSend[6] = 80;
 }
 
-void MyRobot::moveBack(){
+void Wifibot::moveBack(){
     DataToSend[2] = 120;
     DataToSend[3] = 0;
     DataToSend[4] = 120;
@@ -37,7 +34,7 @@ void MyRobot::moveBack(){
     DataToSend[6] = 0;
 }
 
-void MyRobot::moveLeft(){
+void Wifibot::moveLeft(){
     DataToSend[2] = 20;
     DataToSend[3] = 0;
     DataToSend[4] = 0;
@@ -45,7 +42,7 @@ void MyRobot::moveLeft(){
     DataToSend[6] = 64;
 }
 
-void MyRobot::moveRight(){
+void Wifibot::moveRight(){
     DataToSend[2] = 0;
     DataToSend[3] = 0;
     DataToSend[4] = 20;
@@ -53,7 +50,7 @@ void MyRobot::moveRight(){
     DataToSend[6] = 16;
 }
 
-void MyRobot::doConnect(QString ipAddress, quint16 port) {
+void Wifibot::doConnect(QString ipAddress, quint16 port) {
     socket = new QTcpSocket(this); // socket creation
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
@@ -70,53 +67,31 @@ void MyRobot::doConnect(QString ipAddress, quint16 port) {
 
 }
 
-void MyRobot::disConnect() {
+void Wifibot::disConnect() {
     TimerEnvoi->stop();
     socket->close();
 }
 
-void MyRobot::connected() {
-    qDebug() << "connected..."; // Hey server, tell me about you.
+void Wifibot::connected() {
+    qDebug() << "connected...";
 }
 
-void MyRobot::disconnected() {
+void Wifibot::disconnected() {
     qDebug() << "disconnected...";
 }
 
-void MyRobot::bytesWritten(qint64 bytes) {
+void Wifibot::bytesWritten(qint64 bytes) {
     qDebug() << bytes << " bytes written...";
 }
 
-void MyRobot::readyRead() {
+void Wifibot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
     DataReceived = socket->readAll();
-   /*
-    dataL->SpeedFront=int(((DataReceived[1] << 8) + DataReceived[0]));
-    if (dataL->SpeedFront > 32767) dataL->SpeedFront=dataL-
-    >SpeedFront-65536;
-     dataL->BatLevel=DataReceived[2];
-     dataL->IR=DataReceived[3];
-     dataL->IR2=DataReceived[4];
-    dataL->odometry= long(DataReceived[8] << 24) +long(DataReceived[7] <<
-    16)+long(DataReceived[6] << 8)+long(DataReceived[5]);
-     dataR->SpeedFront=int(DataReceived[10] << 8 + DataReceived[9]);
-    if (dataR->SpeedFront > 32767) dataR->SpeedFront=dataR-
-    >SpeedFront-65536;
-     dataR->BatLevel=0;
-     dataR->IR=DataReceived[11];
-     dataR->IR2=DataReceived[12];
-    dataR->odometry=((((long)DataReceived[16] << 24))+(((long)DataReceived[15] <<
-    16))+(((long)DataReceived[14] << 8))+((long)DataReceived[13]));
-     dataL->Current=DataReceived[17];
-     dataR->Current=DataReceived[17];
-     dataL->Version=DataReceived[18];
-     dataR->Version=DataReceived[18];
-    */
     emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
 }
 
-void MyRobot::MyTimerSlot() {
+void Wifibot::MyTimerSlot() {
     qDebug() << "Timer...";
     while(Mutex.tryLock());
     unsigned char * ptr = (unsigned char*)DataToSend.data();
@@ -127,13 +102,13 @@ void MyRobot::MyTimerSlot() {
     socket->write(DataToSend);
     Mutex.unlock();
 }
-void MyRobot::readData(QByteArray* receivedData) {
+void Wifibot::readData(QByteArray* receivedData) {
 }
 
-void  MyRobot::sendData(QByteArray* sentData) {
+void  Wifibot::sendData(QByteArray* sentData) {
 }
 
-short MyRobot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
+short Wifibot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
 {
 unsigned int Crc = 0xFFFF;
 unsigned int Polynome = 0xA001;
