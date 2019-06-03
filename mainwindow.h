@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "myrobot.h"
+#include "wifibot.h"
 
 #include <QMainWindow>
 
@@ -18,7 +18,7 @@ public:
     ~MainWindow();
     void updateSentLabel(QString newText);
     void updateReceivedLabel(QString newText);
-    MyRobot *robot;
+    Wifibot *robot;
 
 public slots:
     void updateSendTest();
