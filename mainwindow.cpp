@@ -4,9 +4,16 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
+    connect(robot, &Wifibot::readyRead, this, &MainWindow::updateSpeedLabel);
+    // TODO : Etablir les liens entre les méthodes du robot et celles de l'interface !!! ICI uniquement
 }
 void MainWindow::updateSendTest(){
     updateSentLabel("Bonjour");
+}
+void MainWindow::updateSpeedLabel(){
+    // Récupère le speed label
+    // tu récupères le speed dans ta structure de donnée dans le robot
+    // tu mets à jour le speed label
 }
 void MainWindow::updateReceivedTest(){
     updateReceivedLabel("Bonjour reçu");
