@@ -89,31 +89,35 @@ void MyRobot::bytesWritten(qint64 bytes) {
 
 void MyRobot::readyRead() {
     qDebug() << "reading..."; // read the data from the socket
+
     DataReceived = socket->readAll();
-   /*
+    //DataReceived.setByteOrder (QDataStream : : LittleEndian ) ;
+
+   dataInType *dataL,*dataR;
     dataL->SpeedFront=int(((DataReceived[1] << 8) + DataReceived[0]));
-    if (dataL->SpeedFront > 32767) dataL->SpeedFront=dataL-
-    >SpeedFront-65536;
-     dataL->BatLevel=DataReceived[2];
-     dataL->IR=DataReceived[3];
-     dataL->IR2=DataReceived[4];
-    dataL->odometry= long(DataReceived[8] << 24) +long(DataReceived[7] <<
-    16)+long(DataReceived[6] << 8)+long(DataReceived[5]);
-     dataR->SpeedFront=int(DataReceived[10] << 8 + DataReceived[9]);
-    if (dataR->SpeedFront > 32767) dataR->SpeedFront=dataR-
-    >SpeedFront-65536;
-     dataR->BatLevel=0;
-     dataR->IR=DataReceived[11];
-     dataR->IR2=DataReceived[12];
-    dataR->odometry=((((long)DataReceived[16] << 24))+(((long)DataReceived[15] <<
-    16))+(((long)DataReceived[14] << 8))+((long)DataReceived[13]));
-     dataL->Current=DataReceived[17];
-     dataR->Current=DataReceived[17];
-     dataL->Version=DataReceived[18];
-     dataR->Version=DataReceived[18];
-    */
+
+        if (dataL->SpeedFront > 32767)
+            dataL->SpeedFront=dataL->SpeedFront-65536;
+         dataL->BatLevel=DataReceived[2];
+         dataL->IR=DataReceived[3];
+         dataL->IR2=DataReceived[4];
+         dataL->odometry= long(DataReceived[8] << 24) +long(DataReceived[7] <<16)+long(DataReceived[6] << 8)+long(DataReceived[5]);
+         dataR->SpeedFront= int(DataReceived[10] << 8 + DataReceived[9]);
+
+         if (dataR->SpeedFront > 32767)
+             dataR->SpeedFront=dataR->SpeedFront-65536;
+         dataR->BatLevel=0;
+         dataR->IR=DataReceived[11];
+         dataR->IR2=DataReceived[12];
+         dataR->odometry=((((long)DataReceived[16] << 24))+(((long)DataReceived[15]<<16))+(((long)DataReceived[14] << 8))+((long)DataReceived[13]));
+         dataL->Current=DataReceived[17];
+         dataR->Current=DataReceived[17];
+         dataL->Version=DataReceived[18];
+         dataR->Version=DataReceived[18];
+
     emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
+
 }
 
 void MyRobot::MyTimerSlot() {

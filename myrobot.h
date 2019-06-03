@@ -14,7 +14,12 @@ class MyRobot : public QObject {
 public:
     typedef struct dataInType{
         int SpeedFront;
-        int BatLevel;
+        qint8 BatLevel;
+        int IR;
+        int IR2;
+        int odometry;
+        int Current;
+        int Version;
     }dataInType;
 
 

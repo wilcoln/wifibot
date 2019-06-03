@@ -63,3 +63,9 @@ void MainWindow::on_downBouton_clicked()
 {
     robot->moveBack();
 }
+
+
+
+
+
+
