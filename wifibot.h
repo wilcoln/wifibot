@@ -47,9 +47,11 @@ public slots :
     void moveLeft();
     void moveForward();
     void moveRight();
+    void setSpeed(int speed);
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
+    short speed;
 };
 
 #endif // WIFIBOT_H

@@ -15,42 +15,45 @@ Wifibot::Wifibot(QObject *parent) : QObject(parent)
     DataToSend[8] = 0x0;
 
     DataReceived.resize(21);
+    //Initialisation des vitesse
+    setSpeed(20);
+
     TimerEnvoi = new QTimer();
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
 }
 
 void Wifibot::moveForward()
 {
-    DataToSend[2] = 120;
+    DataToSend[2] = speed;
     DataToSend[3] = 0;
-    DataToSend[4] = 120;
+    DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 80;
 }
 
 void Wifibot::moveBack()
 {
-    DataToSend[2] = 120;
+    DataToSend[2] = speed;
     DataToSend[3] = 0;
-    DataToSend[4] = 120;
+    DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 0;
 }
 
-void Wifibot::moveLeft()
+void Wifibot::move()
 {
-    DataToSend[2] = 20;
+    DataToSend[2] = speed;
     DataToSend[3] = 0;
-    DataToSend[4] = 0;
+    DataToSend[4] = speed*.5;
     DataToSend[5] = 0;
     DataToSend[6] = 64;
 }
 
-void Wifibot::moveRight()
+void Wifibot::move()
 {
-    DataToSend[2] = 0;
+    DataToSend[2] = speed*.5;
     DataToSend[3] = 0;
-    DataToSend[4] = 20;
+    DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 16;
 }
