@@ -20,12 +20,14 @@ public:
     void updateReceivedLabel(QString newText);
     Wifibot *robot;
 
+    void updateBatteryLevel();
 public slots:
     void updateSendTest();
     void updateReceivedTest();
     void updateSentTrame(QByteArray *sentData);
     void updateReceivedTrame(QByteArray *receivedData);
     void updateSpeedLabel();
+    void updateInfos();
 private slots:
     void on_upBoutton_clicked();
 

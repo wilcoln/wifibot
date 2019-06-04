@@ -90,7 +90,6 @@ void Wifibot::readyRead() {
     DataReceived = socket->readAll();
     //DataReceived.setByteOrder (QDataStream : : LittleEndian ) ;
 
-   dataInType *dataL,*dataR;
     dataL->SpeedFront=int(((DataReceived[1] << 8) + DataReceived[0]));
 
         if (dataL->SpeedFront > 32767)

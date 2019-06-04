@@ -5,6 +5,20 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
 }
+
+void MainWindow::updateInfos(){
+    updateBatteryLevel();
+    updateSpeedLabel();
+}
+
+void MainWindow::updateBatteryLevel(){
+    // Récupère le speed label
+    // tu récupères le speed dans ta structure de donnée dans le robot
+    // tu mets à jour le speed label
+    ui->progressBar->setValue( robot->dataL->BatLevel);
+
+}
+
 void MainWindow::updateSendTest(){
     updateSentLabel("Bonjour");
 }
@@ -12,7 +26,14 @@ void MainWindow::updateSpeedLabel(){
     // Récupère le speed label
     // tu récupères le speed dans ta structure de donnée dans le robot
     // tu mets à jour le speed label
+    ui->speedLeft->setText( QString::number(robot->dataL->SpeedFront));
 }
+
+
+
+
+
+
 void MainWindow::updateReceivedTest(){
     updateReceivedLabel("Bonjour reçu");
 }
