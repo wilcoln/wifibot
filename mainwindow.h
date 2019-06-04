@@ -41,6 +41,8 @@ private slots:
 
     void on_downBouton_clicked();
 
+    void on_speedSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
 };

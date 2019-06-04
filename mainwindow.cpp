@@ -88,5 +88,5 @@ void MainWindow::on_downBouton_clicked()
 
 void MainWindow::on_speedSlider_valueChanged(int value)
 {
-    //
+    robot->setSpeed(value);
 }

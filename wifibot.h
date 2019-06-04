@@ -51,7 +51,7 @@ public slots :
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
-    short speed;
+    int speed;
 };
 
 #endif // WIFIBOT_H
