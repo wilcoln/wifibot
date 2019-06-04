@@ -2,12 +2,20 @@
 #include "wifibot.h"
 #include <QApplication>
 
+
 int main(int argc, char *argv[])
 {
+    // Initialisations
     QApplication a(argc, argv);
     MainWindow w;
-
     w.robot = new Wifibot(nullptr);
+
+    //  ---->  Make all connections here <-----
+    QObject::connect(w.robot, &Wifibot::readyRead, &w, &MainWindow::updateSpeedLabel);
+    // ----> End connections <-----
+
+    // Affichage de la fenêtre
     w.show();
     return a.exec();
 }
+
