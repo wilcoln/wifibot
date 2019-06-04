@@ -9,19 +9,19 @@
 #include <QMutex>
 #include <QString>
 
+typedef struct dataInType{
+    int SpeedFront;
+    qint8 BatLevel;
+    int IR;
+    int IR2;
+    int odometry;
+    int Current;
+    int Version;
+}dataInType;
+
 class Wifibot : public QObject {
     Q_OBJECT
 public:
-    typedef struct dataInType{
-        int SpeedFront;
-        qint8 BatLevel;
-        int IR;
-        int IR2;
-        int odometry;
-        int Current;
-        int Version;
-    }dataInType;
-
     dataInType *dataL, *dataR;
 
     explicit Wifibot(QObject *parent = nullptr);
@@ -35,7 +35,7 @@ public:
 
 
 signals:
-    void readCompleted();
+    void readCompleted(dataInType* dataL, dataInType* dataR);
 public slots :
     void connected();
     void readyRead();

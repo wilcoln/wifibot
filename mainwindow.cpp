@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 }
 
-void MainWindow::updateInfos(){
+void MainWindow::updateInfos(dataInType* dataL, dataInType* dataR){
     updateBatteryLevel();
     updateSpeedLabel();
 }

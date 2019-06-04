@@ -122,7 +122,7 @@ void Wifibot::readyRead()
     dataL->Version = DataReceived[18];
     dataR->Version = DataReceived[18];
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
-    emit readCompleted();
+    emit readCompleted(dataL, dataR);
 }
 
 void Wifibot::MyTimerSlot()

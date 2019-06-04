@@ -27,7 +27,7 @@ public slots:
     void updateSentTrame(QByteArray *sentData);
     void updateReceivedTrame(QByteArray *receivedData);
     void updateSpeedLabel();
-    void updateInfos();
+    void updateInfos(dataInType* dataL, dataInType* dataR);
 private slots:
     void on_upBoutton_clicked();
 
