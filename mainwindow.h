@@ -20,6 +20,7 @@ public:
     void updateReceivedLabel(QString newText);
     Wifibot *robot;
 
+    void updateBatteryLevel();
 public slots:
     void updateSendTest();
     void updateReceivedTest();

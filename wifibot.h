@@ -22,7 +22,7 @@ public:
         int Version;
     }dataInType;
 
-
+    dataInType *dataL,*dataR;
 
     explicit Wifibot(QObject *parent = nullptr);
     void doConnect(QString ipAddress, quint16 port);
