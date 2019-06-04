@@ -99,7 +99,7 @@ void Wifibot::readyRead()
     qDebug() << "reading..."; // read the data from the socket
 
     DataReceived = socket->readAll();
-    //DataReceived.setByteOrder (QDataStream : : LittleEndian ) ;
+   //DataReceived.setByteOrder (QDataStream : : LittleEndian ) ;
 
     dataL->SpeedFront = int(((DataReceived[1] << 8) + DataReceived[0]));
 
@@ -122,7 +122,7 @@ void Wifibot::readyRead()
     dataL->Version = DataReceived[18];
     dataR->Version = DataReceived[18];
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
-    emit readCompleted(dataL, dataR);
+   // emit readCompleted(dataL, dataR);
 }
 
 void Wifibot::MyTimerSlot()

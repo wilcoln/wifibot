@@ -30,10 +30,6 @@ void MainWindow::updateSpeedLabel(){
 }
 
 
-
-
-
-
 void MainWindow::updateReceivedTest(){
     updateReceivedLabel("Bonjour reçu");
 }
@@ -90,8 +86,7 @@ void MainWindow::on_downBouton_clicked()
     robot->moveBack();
 }
 
-
-
-
-
-
+void MainWindow::on_speedSlider_valueChanged(int value)
+{
+    //
+}
