@@ -22,7 +22,7 @@ public:
         int Version;
     }dataInType;
 
-    dataInType *dataL,*dataR;
+    dataInType *dataL, *dataR;
 
     explicit Wifibot(QObject *parent = nullptr);
     void doConnect(QString ipAddress, quint16 port);
@@ -33,15 +33,15 @@ public:
     short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max);
     void moveBack();
 
-signals :
-    void readyRead();
+
+signals:
+    void readCompleted();
 public slots :
     void connected();
+    void readyRead();
     void disconnected();
     void bytesWritten(qint64 bytes);
-
     void MyTimerSlot();
-
     void readData(QByteArray *receivedData);
     void sendData(QByteArray *sendData);
     void moveLeft();
@@ -50,7 +50,6 @@ public slots :
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
-    
 };
 
 #endif // WIFIBOT_H
