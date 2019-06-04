@@ -32,13 +32,14 @@ public:
     QMutex Mutex;
     short Crc16(unsigned char *Adresse_tab, unsigned char Taille_max);
     void moveBack();
-signals:
-    void updateUI(const QByteArray Data);
-public slots:
+
+signals :
+    void readyRead();
+public slots :
     void connected();
     void disconnected();
     void bytesWritten(qint64 bytes);
-    void readyRead();
+
     void MyTimerSlot();
 
     void readData(QByteArray *receivedData);
@@ -49,6 +50,7 @@ public slots:
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
+    
 };
 
 #endif // WIFIBOT_H

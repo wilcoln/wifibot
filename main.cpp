@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.robot = new Wifibot(nullptr);
 
-    //  ---->  Make all connections here <-----
+    //  ----> Make all connections here <-----
     QObject::connect(w.robot, &Wifibot::readyRead, &w, &MainWindow::updateInfos);
     // ----> End connections <-----
 

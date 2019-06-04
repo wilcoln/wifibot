@@ -110,8 +110,6 @@ void Wifibot::readyRead() {
          dataR->Current=DataReceived[17];
          dataL->Version=DataReceived[18];
          dataR->Version=DataReceived[18];
-
-    emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
 
 }
