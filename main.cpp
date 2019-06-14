@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     w.robot = new Wifibot(nullptr);
 
     //  ----> Make all connections here <-----
-    // Object::connect(w.robot, &Wifibot::readCompleted, &w, &MainWindow::updateInfos);
+    QObject::connect(w.robot, &Wifibot::readCompleted, &w, &MainWindow::updateInfos);
     // ----> End connections <-----
 
     // Affichage de la fenêtre

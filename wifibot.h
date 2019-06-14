@@ -36,6 +36,7 @@ public:
 
 signals:
     void readCompleted(dataInType* dataL, dataInType* dataR);
+    void speedChange(int speed);
 public slots :
     void connected();
     void readyRead();
@@ -52,6 +53,10 @@ private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
     int speed;
+    bool forwarding;
+    bool backwarding;
+    bool leftwarding;
+    bool rightwarding;
 };
 
 #endif // WIFIBOT_H

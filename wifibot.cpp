@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "wifibot.h"
-
+#define SPEED_DIVISION_FACTOR .8
 Wifibot::Wifibot(QObject *parent) : QObject(parent)
 {
+    dataL = (dataInType*) malloc(sizeof(dataInType));
+    dataR = (dataInType*) malloc(sizeof(dataInType));
     DataToSend.resize(9);
     DataToSend[0] = 0xFF;
     DataToSend[1] = 0x07;
@@ -20,10 +22,23 @@ Wifibot::Wifibot(QObject *parent) : QObject(parent)
 
     TimerEnvoi = new QTimer();
     connect(TimerEnvoi, SIGNAL(timeout()), this, SLOT(MyTimerSlot())); //Send data to wifibot timer
+    forwarding = false;
+    backwarding = false;
+    leftwarding = false;
+    backwarding = false;
 }
 
 void Wifibot::setSpeed(int value){
     speed = value;
+    if(forwarding){
+        moveForward();
+    }else if (backwarding) {
+       moveBack();
+    }else if (leftwarding) {
+       moveLeft();
+    }else  if (rightwarding){
+        moveRight();
+    }
 }
 void Wifibot::moveForward()
 {
@@ -33,6 +48,11 @@ void Wifibot::moveForward()
     DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 80;
+    forwarding = true;
+    leftwarding = false;
+    backwarding = false;
+    rightwarding = false;
+
 }
 
 void Wifibot::moveBack()
@@ -42,24 +62,36 @@ void Wifibot::moveBack()
     DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 0;
+    forwarding = false;
+    leftwarding = false;
+    backwarding = true;
+    rightwarding = false;
+}
+
+void Wifibot::moveRight()
+{
+    DataToSend[2] = speed;
+    DataToSend[3] = 0;
+    DataToSend[4] = speed;
+    DataToSend[5] = 0;
+    DataToSend[6] = 64;
+    forwarding = false;
+    leftwarding = true;
+    backwarding = false;
+    rightwarding = false;
 }
 
 void Wifibot::moveLeft()
 {
     DataToSend[2] = speed;
     DataToSend[3] = 0;
-    DataToSend[4] = speed*.5;
-    DataToSend[5] = 0;
-    DataToSend[6] = 64;
-}
-
-void Wifibot::moveRight()
-{
-    DataToSend[2] = speed*.5;
-    DataToSend[3] = 0;
     DataToSend[4] = speed;
     DataToSend[5] = 0;
     DataToSend[6] = 16;
+    forwarding = false;
+    leftwarding = false;
+    backwarding = false;
+    rightwarding = true;
 }
 
 void Wifibot::doConnect(QString ipAddress, quint16 port)
@@ -105,7 +137,7 @@ void Wifibot::readyRead()
 {
     qDebug() << "reading..."; // read the data from the socket
 
-    DataReceived = socket->readAll();
+       DataReceived = socket->readAll();
    //DataReceived.setByteOrder (QDataStream : : LittleEndian ) ;
 
     dataL->SpeedFront = int(((DataReceived[1] << 8) + DataReceived[0]));
@@ -129,7 +161,7 @@ void Wifibot::readyRead()
     dataL->Version = DataReceived[18];
     dataR->Version = DataReceived[18];
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
-   // emit readCompleted(dataL, dataR);
+   emit readCompleted(dataL, dataR);
 }
 
 void Wifibot::MyTimerSlot()
