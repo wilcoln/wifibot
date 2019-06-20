@@ -21,12 +21,16 @@ public:
     Wifibot *robot;
 
     void updateBatteryLevel();
+    void updateIRSensorLabel();
+    void updateSpeedLabel();
+    void updateCurrentLabel();
+    void updateOdomeryLabel();
 public slots:
     void updateSendTest();
     void updateReceivedTest();
     void updateSentTrame(QByteArray *sentData);
     void updateReceivedTrame(QByteArray *receivedData);
-    void updateSpeedLabel();
+
     void updateInfos(dataInType* dataL, dataInType* dataR);
 private slots:
     void on_upBoutton_clicked();

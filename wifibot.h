@@ -14,7 +14,7 @@ typedef struct dataInType{
     qint8 BatLevel;
     int IR;
     int IR2;
-    int odometry;
+    double odometry;
     int Current;
     int Version;
 }dataInType;
