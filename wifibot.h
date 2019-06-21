@@ -8,7 +8,21 @@
 #include <QTimer>
 #include <QMutex>
 #include <QString>
+#include <QVBoxLayout>
+#include <QFileDialog>
+#include <QNetworkAccessManager>
+#include <QWebEngineView>
+#include <QKeyEvent>
+#include <QFileDialog>
+#include <vector>
 
+#define PI_ROTATION_TIME 2
+#define UNIT_MOVE_TIME 4
+
+typedef struct Vecteur{
+    double angle;
+    double length;
+}vecteur;
 typedef struct dataInType{
     int SpeedFront;
     qint8 BatLevel;
@@ -48,10 +62,17 @@ public slots :
     void moveLeft();
     void moveForward();
     void moveRight();
+    void move(std::vector<Vecteur> vecteurs);
+    void move(Vecteur vecteur);
     void setSpeed(int speed);
+    void turn(double angle);
+    void goStraight(double distance);
+    void stopMove();
 private:
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
+    QTimer* TimerMoveTotal;
+    QTimer* TimerMoveStep;
     int speed;
     bool forwarding;
     bool backwarding;

@@ -3,7 +3,8 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow){
-    ui->setupUi(this);
+    ui->setupUi((QMainWindow *)this);
+    Camera = new QNetworkAccessManager();
 }
 
 void MainWindow::updateInfos(dataInType* dataL, dataInType* dataR){
@@ -249,4 +250,96 @@ void MainWindow::on_downBouton_clicked()
 void MainWindow::on_speedSlider_valueChanged(int value)
 {
     robot->setSpeed(value);
+}
+
+
+void MainWindow::on_pushButton5_clicked(){
+    this->Camera->get(QNetworkRequest(QUrl("http://"+ui->ipAddressEdit->text()+":8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=-200")));
+}
+
+void MainWindow::on_pushButton4_clicked(){
+    this->Camera->get(QNetworkRequest(QUrl("http://"+ui->ipAddressEdit->text()+":8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=200")));
+}
+
+void MainWindow::on_pushButton2_clicked(){
+    this->Camera->get(QNetworkRequest(QUrl("http://"+ui->ipAddressEdit->text()+":8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=200")));
+}
+void MainWindow::on_pushButton3_clicked(){
+    this->Camera->get(QNetworkRequest(QUrl("http://"+ui->ipAddressEdit->text()+":8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=-200")));
+}
+
+void MainWindow::video(){
+    this->view = new QWebEngineView();
+    //this->view->setLayout(ui->vLayout);
+    this->view->load(QUrl("http://"+ui->ipAddressEdit->text()+":8080/?action=stream"));
+    this->view->show();
+    this->Camera->get(QNetworkRequest(QUrl("http://192.168.1.11:8080/?action=command&dest=0&plugin=0&id=10094855&group=1&value=1")));
+    this->view->show();
+}
+
+void MainWindow::screenshot(){
+    QPixmap capt =QPixmap();
+    capt = QPixmap::grabWidget(this->view);
+    QString format = "png";
+    QString initialPath = QDir::currentPath() + tr("/sans_nom.") + format;
+
+        QString name = QFileDialog::getSaveFileName((QWidget*)this, tr("Save As"),
+                                   initialPath,
+                                   tr("%1 Files (*.%2);;All Files (*)")
+                                   .arg(format.toUpper())
+                                   .arg(format));
+        if (!name.isEmpty()){
+            capt.save(name, format.toUtf8());
+        }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event){
+    if( event->key() == Qt::Key_Z){
+        on_upBoutton_clicked();
+    }
+    if( event->key() == Qt::Key_Q){
+        on_LeftBoutton_clicked();
+    }
+    if( event->key() == Qt::Key_D){
+        on_rightBoutton_clicked();
+    }
+    if( event->key() == Qt::Key_S){
+        on_downBouton_clicked();
+    }
+    if( event->key() == Qt::Key_O){
+        on_pushButton5_clicked();
+    }
+    if( event->key() == Qt::Key_K){
+        on_pushButton2_clicked();
+    }
+    if( event->key() == Qt::Key_L){
+        on_pushButton4_clicked();
+    }
+    if( event->key() == Qt::Key_M){
+        on_pushButton3_clicked();
+    }
+    if( event->key() == Qt::Key_X){
+        video();
+    }
+    if( event->key() == Qt::Key_C){
+        screenshot();
+    }
+}
+
+
+
+
+void MainWindow::on_screenShotBouton_clicked()
+{
+    screenshot();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->speedSlider->setValue(0);
+}
+
+void MainWindow::on_radioButton_clicked()
+{
+    video();
 }

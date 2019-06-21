@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "wifibot.h"
+#include <math.h>
 #define SPEED_DIVISION_FACTOR .8
 Wifibot::Wifibot(QObject *parent) : QObject(parent)
 {
@@ -39,6 +40,34 @@ void Wifibot::setSpeed(int value){
     }else  if (rightwarding){
         moveRight();
     }
+}
+
+void Wifibot::turn(double angle)
+{
+    TimerMoveTotal = new QTimer();
+    TimerMoveTotal->start(50*PI_ROTATION_TIME*angle/M_PI);
+    TimerMoveStep = new QTimer();
+    TimerMoveTotal->start(50);
+    connect(TimerMoveStep, SIGNAL(timeout()), this, SLOT(moveLeft()));
+    connect(TimerMoveTotal, SIGNAL(timeout()), this, SLOT(stopMove()));
+}
+
+void Wifibot::goStraight(double distance)
+{
+    TimerMoveTotal = new QTimer();
+    TimerMoveTotal->start(50*UNIT_MOVE_TIME*distance);
+    TimerMoveStep = new QTimer();
+    TimerMoveTotal->start(50);
+    connect(TimerMoveStep, SIGNAL(timeout()), this, SLOT(moveForward()));
+    connect(TimerMoveTotal, SIGNAL(timeout()), this, SLOT(stopMove()));
+}
+
+void Wifibot::stopMove(){
+     TimerMoveStep->stop();
+     TimerMoveTotal->stop();
+
+     delete TimerMoveStep;
+     delete TimerMoveTotal;
 }
 void Wifibot::moveForward()
 {
@@ -81,6 +110,18 @@ void Wifibot::moveRight()
     rightwarding = false;
 }
 
+void Wifibot::move(std::vector<Vecteur> vecteurs)
+{
+    for(auto vecteur: vecteurs){
+        move(vecteur);
+    }
+}
+
+void Wifibot::move(Vecteur vecteur){
+    qDebug() << "call move vector";
+    turn(vecteur.angle);
+    goStraight(vecteur.length);
+}
 void Wifibot::moveLeft()
 {
     DataToSend[2] = speed;
@@ -110,6 +151,15 @@ void Wifibot::doConnect(QString ipAddress, quint16 port)
         return;
     }
     TimerEnvoi->start(75);
+
+
+    //Test move
+//    std::vector<Vecteur> vecteurs;
+//    Vecteur vec1 = {0, 5};
+//    Vecteur vec2 = {M_PI, 5};
+//    vecteurs.push_back(vec1);
+//    vecteurs.push_back(vec2);
+//    move(vecteurs);
 }
 
 void Wifibot::disConnect()
@@ -167,8 +217,7 @@ void Wifibot::readyRead()
 void Wifibot::MyTimerSlot()
 {
     qDebug() << "Timer...";
-    while (Mutex.tryLock())
-        ;
+    while (Mutex.tryLock());
     unsigned char *ptr = (unsigned char *)DataToSend.data();
     short crc = Crc16(ptr + 1, 6);
     DataToSend[7] = (char)crc;        // low byte
@@ -177,12 +226,10 @@ void Wifibot::MyTimerSlot()
     socket->write(DataToSend);
     Mutex.unlock();
 }
-void Wifibot::readData(QByteArray *receivedData)
-{
+void Wifibot::readData(QByteArray *receivedData){
 }
 
-void Wifibot::sendData(QByteArray *sentData)
-{
+void Wifibot::sendData(QByteArray *sentData){
 }
 
 short Wifibot::Crc16(unsigned char *Adresse_tab, unsigned char Taille_max)
